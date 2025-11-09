@@ -14,10 +14,12 @@ const db = new sqlite3.Database(dbPath, (error) => {
         // Criar tabela se não existir
         db.run(`
             CREATE TABLE IF NOT EXISTS produto (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id NOT NULL UNIQUE PRIMARY KEY AUTOINCREMENT,
+                login NOT NULL UNIQUE,
                 nome TEXT NOT NULL UNIQUE,
-                valor TEXT NOT NULL,
-                tipo TEXT NOT NULL
+                email TEXT NOT NULL UNIQUE,
+                senha TEXT NOT NULL UNIQUE,
+                foto TEXT 
             )
         `);
     }
