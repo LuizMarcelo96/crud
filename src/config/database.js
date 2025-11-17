@@ -11,15 +11,15 @@ const db = new sqlite3.Database(dbPath, (error) => {
     } else {
         console.log('Conectado ao banco de dados com sucesso.');
         
-        // Criar tabela se não existir (schema corrigido)
-        db.run(`
-            CREATE TABLE IF NOT EXISTS produto (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                nome TEXT NOT NULL,
-                valor REAL,
-                tipo TEXT,
-                foto TEXT
-            )
+       db.run(
+                `CREATE TABLE IF NOT EXISTS cadastro (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    nome TEXT NOT NULL,
+                    valor REAL,
+                    email REAL,
+                    senha TEXT,
+                    foto TEXT
+      )
         `);
     }
 });
