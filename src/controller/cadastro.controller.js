@@ -1,50 +1,43 @@
-import { response } from "express";
 import cadastroService from "../services/cadastro.services.js";
 
-async function createCadastroController(request, response) {
-    const novoCadastro = request.body;
-
+async function createCadastroController(req, res) {
+    const novoCadastro = req.body;
     try {
         const cadastro = await cadastroService.createCadastroService(novoCadastro);
-        response.status(201).send({cadastro});
-    } catch(error) {
-        response.status(400).send(error.message);
+        res.status(201).send({ cadastro });
+    } catch (error) {
+        res.status(400).send({ error: error.message });
     }
 }
 
-async function findAllCadastroController(request, response) {
+async function findAllCadastroController(req, res) {
     try {
-        const cadastro = await cadastroService.findAllcadastroService();
-        response.status(200).send({cadastro});
-    } catch(error) {
-        response.status(404).send(error.message);
+        const cadastros = await cadastroService.findAllCadastroService();
+        res.status(200).send({ cadastros });
+    } catch (error) {
+        res.status(404).send({ error: error.message });
     }
 }
 
-async function findCadastroByIdController(request, response) {
-
-    const {id} = request.params;
-
+async function findCadastroByIdController(req, res) {
+    const { id } = req.params;
     try {
         const cadastro = await cadastroService.findCadastroByIdService(id);
-        response.status(200).send({cadastro});
-    } catch(error) {
-        response.status(404).send(error.message);
+        res.status(200).send({ cadastro });
+    } catch (error) {
+        res.status(404).send({ error: error.message });
     }
 }
 
-async function updateCadastroController(request, response) {
-    
-    const {id} = request.params;
-    const novoCadastro = request.body;
-
+async function updateCadastroController(req, res) {
+    const { id } = req.params;
+    const novoCadastro = req.body;
     try {
         const cadastro = await cadastroService.updateCadastroService(id, novoCadastro);
-        response.status(201).send({cadastro});
-    } catch(error) {
-        response.status(400).send(error.message);
+        res.status(200).send({ cadastro });
+    } catch (error) {
+        res.status(400).send({ error: error.message });
     }
-
 }
 
 export default {
@@ -52,4 +45,4 @@ export default {
     findAllCadastroController,
     findCadastroByIdController,
     updateCadastroController
-}
+};

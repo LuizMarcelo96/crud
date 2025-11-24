@@ -1,110 +1,53 @@
 import db from "../config/database.js";
 
-db.run(`
-    CREATE TABLE IF NOT EXISTS cadastro (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        login TEXT NOT NULL,
-        email REAL,
-        senha TEXT,
-        foto TEXT
-    )
-`);
-
 function createCadastroRepository(novoCadastro) {
     return new Promise((resolve, reject) => {
+        const { login, email, senha, foto } = novoCadastro;
 
-        const {
-            nome,      
-            valor,
-            tipo       
-        } = novoCadastro;
+        const sql = `
+            INSERT INTO cadastro (login, email, senha, foto)
+            VALUES (?, ?, ?, ?)
+        `;
 
-        db.run(
-            `INSERT INTO cadastro(id,login,email, senha, foto)
-            VALUES(?,?,?,?)`,
-            [nome,valor,tipo],
-            (error) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve({
-                        id: this.lastID,
-                        novoCadastro
-                    });
-                }
-            }
-        );
-
+        db.run(sql, [login, email, senha, foto], function (error) {
+            if (error) reject(error);
+            else resolve({ id: this.lastID, ...novoCadastro });
+        });
     });
-
 }
 
 function findAllCadastroRepository() {
     return new Promise((resolve, reject) => {
-        db.all(
-            `SELECT * FROM cadastro`,
-            [],
-            (error, rows) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(rows);
-                }
-            }
-        );
+        db.all(`SELECT * FROM cadastro`, [], (error, rows) => {
+            if (error) reject(error);
+            else resolve(rows);
+        });
     });
 }
 
 function findCadastroByIdRepository(id) {
     return new Promise((resolve, reject) => {
-        db.get(
-            `SELECT 
-                * 
-            FROM cadastro
-            WHERE id = ?`,
-            [id],
-            (error, row) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(row);
-                }
-            }
-        );
+        db.get(`SELECT * FROM cadastro WHERE id = ?`, [id], (error, row) => {
+            if (error) reject(error);
+            else resolve(row);
+        });
     });
 }
 
 function updateCadastroRepository(id, cadastro) {
     return new Promise((resolve, reject) => {
+        const { login, email, senha, foto } = cadastro;
 
-        const {
-            id,
-            login,
-            senha,
-            email,
-            foto
-        } = cadastro;
+        const sql = `
+            UPDATE cadastro
+            SET login = ?, email = ?, senha = ?, foto = ?
+            WHERE id = ?
+        `;
 
-        db.run(
-            `UPDATE cadastro
-            SET id = ?,      
-                login = ?,
-                senha = ?,
-                email = ?,
-                foto = ?
-            WHERE id = ?`,
-            [login, senha, email,foto, id],
-            (error) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve({
-                        id,
-                        ...cadastro
-                    });
-                }
-            }
-        )
+        db.run(sql, [login, email, senha, foto, id], function (error) {
+            if (error) reject(error);
+            else resolve({ id, ...cadastro });
+        });
     });
 }
 
@@ -113,4 +56,4 @@ export default {
     findAllCadastroRepository,
     findCadastroByIdRepository,
     updateCadastroRepository
-}
+};

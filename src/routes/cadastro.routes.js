@@ -1,16 +1,11 @@
 import { Router } from "express";
-import cadastroRepository from "../repositories/cadastro.repository.js";
-import cadastroRepository from "../repositories/cadastro.repository.js";
+import cadastroController from "../controller/cadastro.controller.js";
 
-const cadastroRouters = Router();
+const cadastroRouter = Router();
 
-cadastroRouters.post("/cadastro", async (req, res) => {
-    try {
-        const novoCadastro = await cadastroRepository.createCadastroRepository(req.body);
-        res.status(201).json(novoCadastro);
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    }
-});
+cadastroRouter.post("/cadastro", cadastroController.createCadastroController);
+cadastroRouter.get("/cadastro", cadastroController.findAllCadastroController);
+cadastroRouter.get("/cadastro/:id", cadastroController.findCadastroByIdController);
+cadastroRouter.put("/cadastro/:id", cadastroController.updateCadastroController);
 
-export default cadastroRouters;
+export default cadastroRouter;

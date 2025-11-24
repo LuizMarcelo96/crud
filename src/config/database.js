@@ -10,16 +10,15 @@ const db = new sqlite3.Database(dbPath, (error) => {
         console.error('Erro ao conectar ao banco de dados:', error.message);
     } else {
         console.log('Conectado ao banco de dados com sucesso.');
-        
-       db.run(
-                `CREATE TABLE IF NOT EXISTS cadastro (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    nome TEXT NOT NULL,
-                    valor REAL,
-                    email REAL,
-                    senha TEXT,
-                    foto TEXT
-      )
+
+        db.run(`
+            CREATE TABLE IF NOT EXISTS cadastro (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                login TEXT NOT NULL,
+                email TEXT,
+                senha TEXT,
+                foto TEXT
+            )
         `);
     }
 });
